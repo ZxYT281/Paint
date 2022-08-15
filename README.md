@@ -1,4 +1,4 @@
-# Simple Pain App
+# Simple Paint App
 
 This is a simple paint app made in python
 
