@@ -1,4 +1,6 @@
+from turtle import width
 from utils.button import Button
+from utils.fade_text import FadeText
 from utils import *
 from PIL import Image
 import sys
@@ -31,6 +33,14 @@ def write_image(filename):
 
     #     data += "\n"
     image.save(filename.replace(".ppm", ".png"), "PNG")
+    fade_txt = FadeText(
+        100, 100, f"Image saved {filename.replace('.ppm', '.png')}", BLACK
+    )
+
+    fade_txt.x = WIDTH/2 - fade_txt.txt.get_width()/2
+    fade_txt.y = (HEIGHT - TOOLBAR_HEIGHT)/2 - \
+        fade_txt.txt.get_height()/2
+    fade_texts.append(fade_txt)
     # with open(filename, "w") as f:
     #     f.write(data)
 
@@ -65,6 +75,11 @@ def draw(win, grid, buttons):
                      (WIDTH, HEIGHT - TOOLBAR_HEIGHT))
     for button in buttons:
         button.draw(win)
+
+    for x in fade_texts:
+        x.update(win)
+        if x.lifetime <= 0:
+            fade_texts.remove(x)
 
     pygame.display.update()
 
@@ -143,6 +158,7 @@ buttons = [
     Button(0, buttons_y, BUTTON_SIZE, BUTTON_SIZE, WHITE, "FILL", BLACK),
 ]
 undo_list = []
+fade_texts = []
 
 prev_btn_pos = BUTTON_START_X
 for btn in buttons:
@@ -164,8 +180,30 @@ while run:
                 write_image(f"pictures/{filenamersf}.ppm")
             if event.key == pygame.K_l:
                 DRAW_GRID_LINES = not DRAW_GRID_LINES
+                fade_txt = FadeText(
+                    100, 100, "Grid Lines: " +
+                    ("ON" if DRAW_GRID_LINES else "OFF"), BLACK
+                )
+
+                fade_txt.x = WIDTH/2 - fade_txt.txt.get_width()/2
+                fade_txt.y = (HEIGHT - TOOLBAR_HEIGHT)/2 - \
+                    fade_txt.txt.get_height()/2
+                fade_texts.append(fade_txt)
             if event.key == pygame.K_j:
                 MAKE_BG_TRANSPARENT_ON_SAVE = not MAKE_BG_TRANSPARENT_ON_SAVE
+                fade_txt = FadeText(
+                    100, 100, "Transparent save " +
+                    ("ON" if MAKE_BG_TRANSPARENT_ON_SAVE else "OFF"), BLACK
+                )
+
+                fade_txt.x = WIDTH/2 - fade_txt.txt.get_width()/2
+                fade_txt.y = (HEIGHT - TOOLBAR_HEIGHT)/2 - \
+                    fade_txt.txt.get_height()/2
+                fade_texts.append(fade_txt)
+
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                exit()
 
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
