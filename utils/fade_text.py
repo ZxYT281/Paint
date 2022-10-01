@@ -9,7 +9,7 @@ class FadeText:
         self.text_color = text_color
         self.lifetime = FADE_TIME
         self.txt = get_font(30).render(
-            self.text, False, self.text_color, (255, 255, 255))
+            self.text, False, self.text_color, (0, 255, 255))
 
     def update(self, win):
         if self.lifetime > 0:

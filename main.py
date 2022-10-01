@@ -1,3 +1,4 @@
+import os
 from turtle import width
 from utils.button import Button
 from utils.fade_text import FadeText
@@ -138,6 +139,15 @@ def undo(undo_list):
         pass
 
 
+def add_to_fade_texts(fade_text):
+    global fade_texts
+
+    fade_txt.x = WIDTH/2 - fade_txt.txt.get_width()/2
+    fade_txt.y = (HEIGHT - TOOLBAR_HEIGHT)/2 - \
+        fade_txt.txt.get_height()/2
+    fade_texts.append(fade_txt)
+
+
 run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
@@ -177,7 +187,11 @@ while run:
                 undo(undo_list)
             if event.key == pygame.K_s:
                 filenamersf = pygame.time.get_ticks()  # input("Name: ")
-                write_image(f"pictures/{filenamersf}.ppm")
+                filename = f"pictures/{filenamersf}.ppm"
+                fade_txt = FadeText(
+                    100, 100, f"Saved to {os.getcwd()  + filename}", BLACK)
+                add_to_fade_texts(fade_txt)
+                write_image(filename)
             if event.key == pygame.K_l:
                 DRAW_GRID_LINES = not DRAW_GRID_LINES
                 fade_txt = FadeText(
@@ -185,10 +199,7 @@ while run:
                     ("ON" if DRAW_GRID_LINES else "OFF"), BLACK
                 )
 
-                fade_txt.x = WIDTH/2 - fade_txt.txt.get_width()/2
-                fade_txt.y = (HEIGHT - TOOLBAR_HEIGHT)/2 - \
-                    fade_txt.txt.get_height()/2
-                fade_texts.append(fade_txt)
+                add_to_fade_texts(fade_txt)
             if event.key == pygame.K_j:
                 MAKE_BG_TRANSPARENT_ON_SAVE = not MAKE_BG_TRANSPARENT_ON_SAVE
                 fade_txt = FadeText(
@@ -196,10 +207,7 @@ while run:
                     ("ON" if MAKE_BG_TRANSPARENT_ON_SAVE else "OFF"), BLACK
                 )
 
-                fade_txt.x = WIDTH/2 - fade_txt.txt.get_width()/2
-                fade_txt.y = (HEIGHT - TOOLBAR_HEIGHT)/2 - \
-                    fade_txt.txt.get_height()/2
-                fade_texts.append(fade_txt)
+                add_to_fade_texts(fade_txt)
 
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
