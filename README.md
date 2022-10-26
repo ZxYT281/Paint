@@ -29,3 +29,11 @@ Then just run by
 - Press Ctrl to undo a move
 - Press J to turn on or off transparency on save
 - Fill shapes
+
+## Why I forked this
+I want to add some feature to this project like 
+
+- More big canvas
+- Create a dedicated release
+- Also add a systen to chose colors of your own
+- Mix Colors
